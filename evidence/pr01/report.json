@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR01",
+  "commit": "4af5ccafe792f4eeffd4d06ead718a7b9cca6d06",
+  "course_kit": {
+    "version": "v1-w02",
+    "archive_sha256": "5d210c431e32418f45e2cffa9dd2028116c7a9520a36f3c7079c778cd73437a8"
+  },
+  "commands": [
+    "ros2 doctor --report",
+    "ros2 node list --no-daemon --spin-time 2",
+    "ros2 topic list -t",
+    "ros2 node info /turtlesim",
+    "ros2 node info /teleop_turtle",
+    "ros2 topic type /turtle1/pose",
+    "ros2 topic echo /turtle1/pose --once",
+    "timeout --signal=INT 15s ros2 topic hz /turtle1/pose",
+    "ROS_DOMAIN_ID=17 ros2 node list --no-daemon --spin-time 2",
+    "timeout 5s ros2 topic echo /turtle1/pose turtlesim_msgs/msg/Pose --once"
+  ],
+  "tests": [
+    {"name": "turtlesim_node and teleop_turtle discover each other in ROS_DOMAIN_ID=16", "status": "passed"},
+    {"name": "ros2 topic hz /turtle1/pose measures ~125 Hz over 15s", "status": "passed"},
+    {"name": "ROS_DOMAIN_ID=17 hides /turtlesim from node list", "status": "passed"},
+    {"name": "pose read in ROS_DOMAIN_ID=17 times out (exit=124)", "status": "passed"},
+    {"name": "keypress in wrong domain does not move the turtle (control check)", "status": "passed"},
+    {"name": "restoring ROS_DOMAIN_ID=16 restores discovery and delivery (exit=0)", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "С teleop, перезапущенным в ROS_DOMAIN_ID=17 (симулятор остаётся в 16), команда `ros2 node list` в домене 17 видит только /teleop_turtle, а `timeout 5s ros2 topic echo /turtle1/pose turtlesim_msgs/msg/Pose --once` завершается по таймеру без единого сообщения (exit=124), см. evidence/pr01/nodes-broken.txt и pose-broken-exit.txt.",
+    "root_cause": "ROS_DOMAIN_ID определяет диапазон UDP-портов DDS-обнаружения (SPDP); ноды с разным ROS_DOMAIN_ID физически не получают друг от друга ни discovery-, ни пользовательских пакетов, независимо от совпадения имени топика и типа сообщения.",
+    "proof_after": "После возврата teleop в ROS_DOMAIN_ID=16 команда `ros2 node list` снова видит обе ноды, а `ros2 topic echo /turtle1/pose --once` возвращает актуальную позу с exit=0 (evidence/pr01/nodes-fixed.txt, pose-fixed-exit.txt); повторное нажатие ↑ снова двигает черепаху (evidence/pr01/pose-after-key-fixed.txt)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

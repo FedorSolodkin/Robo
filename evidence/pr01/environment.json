@@ -1,0 +1,16 @@
+{
+  "os": {
+    "name": "Ubuntu",
+    "version_id": "26.04",
+    "pretty_name": "Ubuntu 26.04 LTS (Resolute Raccoon)"
+  },
+  "arch": "x86_64",
+  "ros_distro": "lyrical",
+  "rmw_implementation": "rmw_fastrtps_cpp",
+  "gazebo_version": "10.4.0",
+  "image": "osrf/ros:lyrical-desktop-full@sha256:e6b1cb530b65588279681db53784e264ce5cf83f2cc33e689d27d6024d7f3ebe",
+  "domains": {
+    "working": 16,
+    "broken": 17
+  }
+}
