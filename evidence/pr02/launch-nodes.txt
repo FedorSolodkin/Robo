@@ -1,0 +1,6 @@
+=== node list while running ===
+/turtlesim
+=== sending SIGINT to process group of 35 ===
+all processes exited after 2s
+=== processes after stop ===
+no launch/turtlesim processes left
