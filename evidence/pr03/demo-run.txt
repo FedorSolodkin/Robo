@@ -1,0 +1,140 @@
+=== pose before patrol ===
+x: 5.544444561004639
+y: 5.544444561004639
+theta: 0.0
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+=== BROKEN: ros2 run patrol patrol (no remap, publishes to /cmd_vel) ===
+--- topic info /cmd_vel --verbose ---
+Type: geometry_msgs/msg/Twist
+
+Publisher count: 1
+
+Node name: patrol
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.ec.00.45.4c.00.00.00.00.00.00.14.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+
+--- topic info /turtle1/cmd_vel --verbose ---
+Type: geometry_msgs/msg/Twist
+
+Publisher count: 0
+
+Subscription count: 1
+
+Node name: turtlesim
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.88.00.37.b6.00.00.00.00.00.00.1c.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (7)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+--- pose while broken (expect unchanged) ---
+x: 5.544444561004639
+y: 5.544444561004639
+theta: 0.0
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+=== stopping broken patrol ===
+=== FIXED: ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel ===
+--- topic info /turtle1/cmd_vel --verbose (after fix) ---
+Type: geometry_msgs/msg/Twist
+
+Publisher count: 1
+
+Node name: patrol
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.52.01.61.65.00.00.00.00.00.00.14.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: turtlesim
+Node namespace: /
+Topic type: geometry_msgs/msg/Twist
+Topic type hash: RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.88.00.37.b6.00.00.00.00.00.00.1c.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (7)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+--- measuring real command frequency for 10s ---
+average rate: 9.998
+	min: 0.100s max: 0.100s std dev: 0.00021s window: 9
+average rate: 9.999
+	min: 0.100s max: 0.100s std dev: 0.00020s window: 19
+average rate: 9.999
+	min: 0.100s max: 0.100s std dev: 0.00018s window: 29
+average rate: 10.000
+	min: 0.100s max: 0.100s std dev: 0.00017s window: 39
+average rate: 9.999
+	min: 0.100s max: 0.101s std dev: 0.00019s window: 49
+average rate: 10.000
+	min: 0.099s max: 0.101s std dev: 0.00020s window: 59
+average rate: 10.000
+	min: 0.099s max: 0.101s std dev: 0.00021s window: 69
+average rate: 10.000
+	min: 0.099s max: 0.101s std dev: 0.00021s window: 79
+hz_exit=124
+--- pose after fixed patrol (expect movement) ---
+x: 3.9063360691070557
+y: 7.538938522338867
+theta: -1.771185278892517
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
+=== stopping fixed patrol ===
+--- pose shortly after stopping patrol (expect STILL MOVING, no auto-brake) ---
+x: 3.88649320602417
+y: 7.005613803863525
+theta: -1.4495853185653687
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+--- pose 2s later (still no brake applied by turtlesim itself) ---
+x: 3.88649320602417
+y: 7.005613803863525
+theta: -1.4495853185653687
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+=== stopping launch cleanly ===
+clean shutdown after 2s
