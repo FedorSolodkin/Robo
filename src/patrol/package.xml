@@ -3,12 +3,13 @@
 <package format="3">
   <name>patrol</name>
   <version>0.0.0</version>
-  <description>Patrol node: subscribes to turtle pose and commands a fixed velocity</description>
+  <description>Patrol node with validated speed, turn rate and publish rate parameters</description>
   <maintainer email="braveespirit@gmail.com">Fedor Solodkin</maintainer>
   <license>Apache-2.0</license>
 
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
+  <depend>rcl_interfaces</depend>
   <depend>turtlesim_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>

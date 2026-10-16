@@ -16,7 +16,7 @@ setup(
     zip_safe=True,
     maintainer='Fedor Solodkin',
     maintainer_email='braveespirit@gmail.com',
-    description='Patrol node: subscribes to turtle pose and commands a fixed velocity',
+    description='Patrol node with validated speed, turn rate and publish rate parameters',
     license='Apache-2.0',
     extras_require={
         'test': [
