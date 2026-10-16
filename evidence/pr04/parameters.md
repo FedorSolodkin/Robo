@@ -88,6 +88,10 @@ if name == 'publish_hz':
     return True, ''
 ```
 
+Падение проверки сохранено и в CI: прогон на коммите дефектной ветки
+завершился `failure` —
+[actions/runs/38850996506](https://github.com/FedorSolodkin/Robo/actions/runs/38850996506).
+
 Те же тесты ([defect-tests.txt](defect-tests.txt)): **13 failed, 24 passed**.
 Падают случаи `publish_hz` = 0.0, −5.0, 0.9, 30.1, `NaN`, `inf`, `−inf` в тестах
 чистой функции и `0.0`, −5.0, `NaN`, `inf`, 31.0 плюс недопустимый старт в

@@ -6,7 +6,8 @@
 - **Декларация ИИ:** [../../AI_USAGE.md](../../AI_USAGE.md) (раздел «ПР04»)
 - **Коммит реализации** (`report.commit`): `160d91a71ff9c9bf465a68439cd45cc54642d08c`
 - **Дефектный коммит** (стадия «Сломать», ветка `defect/pr04-no-hz-check`):
-  `b65ac4dd42248bd50d51d44b6d028dc483fb520c`
+  `b65ac4dd42248bd50d51d44b6d028dc483fb520c` — красный CI:
+  [actions/runs/38850996506](https://github.com/FedorSolodkin/Robo/actions/runs/38850996506)
 
 ## Как повторить
 
