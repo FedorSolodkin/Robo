@@ -27,6 +27,8 @@ def choose_cmd(last_pose, linear_speed, turn_rate):
 
 def validate_param(name, value):
     """Check one parameter value and return (ok, reason)."""
+    if name == 'publish_hz':
+        return True, ''
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return False, f'{name} must be a number'
     if not math.isfinite(value):
