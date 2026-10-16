@@ -1,0 +1,3 @@
+$ ros2 param set /patrol publish_hz 5.0
+Set parameter successful
+exit=0

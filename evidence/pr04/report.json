@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR04",
+  "commit": "160d91a71ff9c9bf465a68439cd45cc54642d08c",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select turtle_bringup patrol",
+    "python3 -m pytest src/patrol/test -v",
+    "ros2 launch turtle_bringup sim.launch.py",
+    "ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel",
+    "ros2 param list /patrol",
+    "ros2 param get /patrol publish_hz",
+    "timeout --signal=INT 20s ros2 topic hz /turtle1/cmd_vel",
+    "ros2 param set /patrol publish_hz 5.0",
+    "ros2 param set /patrol publish_hz 0.0",
+    "ros2 param set /patrol publish_hz -5.0",
+    "ros2 param set /patrol publish_hz .nan",
+    "ros2 param set /patrol linear_speed 5.0",
+    "ros2 service call /clear std_srvs/srv/Empty",
+    "ros2 action list -t"
+  ],
+  "tests": [
+    {"name": "pytest src/patrol/test: 44 passed, 1 skipped (generated copyright test)", "status": "passed"},
+    {"name": "validate_param accepts 10 -> 5 Hz and rejects 0, negative, NaN, inf", "status": "passed"},
+    {"name": "valid publish_hz change recreates the timer and leaves exactly one timer", "status": "passed"},
+    {"name": "live node: publish_hz 10 -> 5 changes measured rate from 10.002 to 4.999 Hz", "status": "passed"},
+    {"name": "live node: publish_hz 0.0 rejected, value stays 5.0 and rate stays 5.002 Hz", "status": "passed"},
+    {"name": "defect branch: same tests fail (13 failed) and ros2 param set publish_hz 0.0 kills patrol", "status": "passed"},
+    {"name": "fixed version: same 37 tests pass and publish_hz 0.0 is rejected with value and rate unchanged", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "В ветке defect/pr04-no-hz-check (коммит b65ac4dd42248bd50d51d44b6d028dc483fb520c) проверка publish_hz отключена; `ros2 param set /patrol publish_hz 0.0` не получает ответа (timeout, exit=124), нода падает с `ZeroDivisionError: division by zero` в `_restart_timer` (`1.0 / hz`), пропадает из `ros2 node list`, `ros2 param get` отвечает `Node not found`, `ros2 topic hz /turtle1/cmd_vel` не видит ни одного сообщения; те же тесты: 13 failed (evidence/pr04/defect-tests.txt, defect-live-*.txt).",
+    "root_cause": "Допустимость частоты проверялась только в validate_param. Когда проверка отключена, значение 0 доходит до вычисления периода таймера 1/publish_hz; исключение в callback параметров завершает процесс и останавливает весь поток команд, а не только отклоняет значение.",
+    "proof_after": "Проверка возвращена (main, коммит 160d91a71ff9c9bf465a68439cd45cc54642d08c): те же тесты — 37 passed; `ros2 param set /patrol publish_hz 0.0` даёт `Setting parameter failed: publish_hz must be within [1.0, 30.0]`, нода жива, `ros2 param get` возвращает 10.0, поток по-прежнему ~10.005 Гц (evidence/pr04/fixed-tests.txt, fixed-live-*.txt); допустимое 10 -> 5 Гц меняет поток 10.002 -> 4.999 Гц (good-03, good-05)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

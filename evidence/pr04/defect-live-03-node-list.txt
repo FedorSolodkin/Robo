@@ -1,0 +1,3 @@
+$ ros2 node list --no-daemon --spin-time 2
+/turtlesim
+exit=0

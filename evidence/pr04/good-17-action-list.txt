@@ -1,0 +1,3 @@
+$ ros2 action list -t
+/turtle1/rotate_absolute [turtlesim_msgs/action/RotateAbsolute]
+exit=0

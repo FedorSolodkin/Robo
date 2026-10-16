@@ -1,0 +1,31 @@
+$ timeout --signal=INT 20s ros2 topic hz /turtle1/cmd_vel
+WARNING: topic [/turtle1/cmd_vel] does not appear to be published yet
+average rate: 5.130
+	min: 0.195s max: 0.195s std dev: 0.00000s window: 1
+average rate: 5.003
+	min: 0.195s max: 0.204s std dev: 0.00300s window: 6
+average rate: 5.012
+	min: 0.195s max: 0.204s std dev: 0.00274s window: 11
+average rate: 5.005
+	min: 0.195s max: 0.204s std dev: 0.00243s window: 16
+average rate: 5.007
+	min: 0.195s max: 0.204s std dev: 0.00249s window: 21
+average rate: 5.004
+	min: 0.195s max: 0.204s std dev: 0.00266s window: 26
+average rate: 5.004
+	min: 0.195s max: 0.204s std dev: 0.00274s window: 31
+average rate: 5.002
+	min: 0.195s max: 0.204s std dev: 0.00277s window: 36
+average rate: 5.003
+	min: 0.195s max: 0.204s std dev: 0.00268s window: 41
+average rate: 5.002
+	min: 0.195s max: 0.204s std dev: 0.00259s window: 46
+average rate: 5.003
+	min: 0.195s max: 0.205s std dev: 0.00270s window: 51
+average rate: 5.001
+	min: 0.195s max: 0.205s std dev: 0.00266s window: 56
+average rate: 5.002
+	min: 0.195s max: 0.205s std dev: 0.00260s window: 61
+average rate: 5.002
+	min: 0.195s max: 0.205s std dev: 0.00258s window: 66
+exit=124

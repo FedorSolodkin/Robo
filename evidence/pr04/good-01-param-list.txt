@@ -1,0 +1,7 @@
+$ ros2 param list /patrol
+  linear_speed
+  publish_hz
+  start_type_description_service
+  turn_rate
+  use_sim_time
+exit=0

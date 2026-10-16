@@ -1,0 +1,3 @@
+$ ros2 param set /patrol publish_hz .nan
+Setting parameter failed: publish_hz must be finite
+exit=0

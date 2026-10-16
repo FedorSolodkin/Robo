@@ -1,0 +1,3 @@
+$ ros2 param set /patrol turn_rate -0.5
+Set parameter successful
+exit=0

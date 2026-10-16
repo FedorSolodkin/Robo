@@ -1,0 +1,48 @@
+$ python3 -m pytest src/patrol/test/test_validate_param.py src/patrol/test/test_params_node.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /work/src/patrol
+plugins: launch_testing_ros-0.29.8, ament_xmllint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_lint-0.20.6, launch_testing-3.9.7, ament_flake8-0.20.6, ament_mypy-0.20.6, typeguard-4.4.4, colcon-core-0.21.0
+collecting ... collected 37 items
+
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-0.0] PASSED [  2%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-0.5] PASSED [  5%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-1.0] PASSED [  8%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate--1.0] PASSED [ 10%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate-0.3] PASSED [ 13%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate-1.0] PASSED [ 16%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-1.0] PASSED [ 18%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-5.0] PASSED [ 21%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-10.0] PASSED [ 24%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-30.0] PASSED [ 27%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[linear_speed--0.1] PASSED [ 29%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[linear_speed-1.1] PASSED [ 32%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[turn_rate--1.1] PASSED [ 35%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[turn_rate-1.1] PASSED [ 37%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.0] PASSED [ 40%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz--5.0] PASSED [ 43%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.9] PASSED [ 45%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-30.1] PASSED [ 48%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[nan] PASSED [ 51%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[inf] PASSED [ 54%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[-inf] PASSED [ 56%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[fast] PASSED [ 59%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[None] PASSED [ 62%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[True] PASSED [ 64%]
+src/patrol/test/test_validate_param.py::test_change_from_10_to_5_hz_is_allowed PASSED [ 67%]
+src/patrol/test/test_params_node.py::test_defaults PASSED                [ 70%]
+src/patrol/test/test_params_node.py::test_valid_hz_change_recreates_the_timer PASSED [ 72%]
+src/patrol/test/test_params_node.py::test_old_timer_is_stopped_and_only_one_timer_remains PASSED [ 75%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[0.0] PASSED [ 78%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[-5.0] PASSED [ 81%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[nan] PASSED [ 83%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[inf] PASSED [ 86%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[31.0] PASSED [ 89%]
+src/patrol/test/test_params_node.py::test_bad_value_in_a_batch_changes_nothing PASSED [ 91%]
+src/patrol/test/test_params_node.py::test_speed_and_turn_changes_are_validated PASSED [ 94%]
+src/patrol/test/test_params_node.py::test_foreign_parameters_are_not_blocked PASSED [ 97%]
+src/patrol/test/test_params_node.py::test_invalid_startup_value_is_refused PASSED [100%]
+
+============================== 37 passed in 4.53s ==============================
+exit=0

@@ -1,0 +1,399 @@
+$ python3 -m pytest src/patrol/test/test_validate_param.py src/patrol/test/test_params_node.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /work/src/patrol
+plugins: launch_testing_ros-0.29.8, ament_xmllint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_lint-0.20.6, launch_testing-3.9.7, ament_flake8-0.20.6, ament_mypy-0.20.6, typeguard-4.4.4, colcon-core-0.21.0
+collecting ... collected 37 items
+
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-0.0] PASSED [  2%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-0.5] PASSED [  5%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-1.0] PASSED [  8%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate--1.0] PASSED [ 10%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate-0.3] PASSED [ 13%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate-1.0] PASSED [ 16%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-1.0] PASSED [ 18%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-5.0] PASSED [ 21%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-10.0] PASSED [ 24%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-30.0] PASSED [ 27%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[linear_speed--0.1] PASSED [ 29%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[linear_speed-1.1] PASSED [ 32%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[turn_rate--1.1] PASSED [ 35%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[turn_rate-1.1] PASSED [ 37%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.0] FAILED [ 40%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz--5.0] FAILED [ 43%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.9] FAILED [ 45%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-30.1] FAILED [ 48%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[nan] FAILED [ 51%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[inf] FAILED [ 54%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[-inf] FAILED [ 56%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[fast] PASSED [ 59%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[None] PASSED [ 62%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[True] PASSED [ 64%]
+src/patrol/test/test_validate_param.py::test_change_from_10_to_5_hz_is_allowed PASSED [ 67%]
+src/patrol/test/test_params_node.py::test_defaults PASSED                [ 70%]
+src/patrol/test/test_params_node.py::test_valid_hz_change_recreates_the_timer PASSED [ 72%]
+src/patrol/test/test_params_node.py::test_old_timer_is_stopped_and_only_one_timer_remains PASSED [ 75%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[0.0] FAILED [ 78%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[-5.0] FAILED [ 81%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[nan] FAILED [ 83%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[inf] FAILED [ 86%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[31.0] FAILED [ 89%]
+src/patrol/test/test_params_node.py::test_bad_value_in_a_batch_changes_nothing PASSED [ 91%]
+src/patrol/test/test_params_node.py::test_speed_and_turn_changes_are_validated PASSED [ 94%]
+src/patrol/test/test_params_node.py::test_foreign_parameters_are_not_blocked PASSED [ 97%]
+src/patrol/test/test_params_node.py::test_invalid_startup_value_is_refused FAILED [100%]
+
+=================================== FAILURES ===================================
+____________ test_rejects_values_outside_the_range[publish_hz-0.0] _____________
+
+name = 'publish_hz', value = 0.0
+
+    @pytest.mark.parametrize('name, value', [
+        ('linear_speed', -0.1),
+        ('linear_speed', 1.1),
+        ('turn_rate', -1.1),
+        ('turn_rate', 1.1),
+        ('publish_hz', 0.0),
+        ('publish_hz', -5.0),
+        ('publish_hz', 0.9),
+        ('publish_hz', 30.1),
+    ])
+    def test_rejects_values_outside_the_range(name, value):
+        ok, reason = validate_param(name, value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:33: AssertionError
+____________ test_rejects_values_outside_the_range[publish_hz--5.0] ____________
+
+name = 'publish_hz', value = -5.0
+
+    @pytest.mark.parametrize('name, value', [
+        ('linear_speed', -0.1),
+        ('linear_speed', 1.1),
+        ('turn_rate', -1.1),
+        ('turn_rate', 1.1),
+        ('publish_hz', 0.0),
+        ('publish_hz', -5.0),
+        ('publish_hz', 0.9),
+        ('publish_hz', 30.1),
+    ])
+    def test_rejects_values_outside_the_range(name, value):
+        ok, reason = validate_param(name, value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:33: AssertionError
+____________ test_rejects_values_outside_the_range[publish_hz-0.9] _____________
+
+name = 'publish_hz', value = 0.9
+
+    @pytest.mark.parametrize('name, value', [
+        ('linear_speed', -0.1),
+        ('linear_speed', 1.1),
+        ('turn_rate', -1.1),
+        ('turn_rate', 1.1),
+        ('publish_hz', 0.0),
+        ('publish_hz', -5.0),
+        ('publish_hz', 0.9),
+        ('publish_hz', 30.1),
+    ])
+    def test_rejects_values_outside_the_range(name, value):
+        ok, reason = validate_param(name, value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:33: AssertionError
+____________ test_rejects_values_outside_the_range[publish_hz-30.1] ____________
+
+name = 'publish_hz', value = 30.1
+
+    @pytest.mark.parametrize('name, value', [
+        ('linear_speed', -0.1),
+        ('linear_speed', 1.1),
+        ('turn_rate', -1.1),
+        ('turn_rate', 1.1),
+        ('publish_hz', 0.0),
+        ('publish_hz', -5.0),
+        ('publish_hz', 0.9),
+        ('publish_hz', 30.1),
+    ])
+    def test_rejects_values_outside_the_range(name, value):
+        ok, reason = validate_param(name, value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:33: AssertionError
+_____________________ test_rejects_non_finite_values[nan] ______________________
+
+value = nan
+
+    @pytest.mark.parametrize('value', [float('nan'), float('inf'), float('-inf')])
+    def test_rejects_non_finite_values(value):
+        ok, reason = validate_param('publish_hz', value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:40: AssertionError
+_____________________ test_rejects_non_finite_values[inf] ______________________
+
+value = inf
+
+    @pytest.mark.parametrize('value', [float('nan'), float('inf'), float('-inf')])
+    def test_rejects_non_finite_values(value):
+        ok, reason = validate_param('publish_hz', value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:40: AssertionError
+_____________________ test_rejects_non_finite_values[-inf] _____________________
+
+value = -inf
+
+    @pytest.mark.parametrize('value', [float('nan'), float('inf'), float('-inf')])
+    def test_rejects_non_finite_values(value):
+        ok, reason = validate_param('publish_hz', value)
+>       assert ok is False
+E       assert True is False
+
+src/patrol/test/test_validate_param.py:40: AssertionError
+________________ test_bad_hz_is_rejected_and_state_is_kept[0.0] ________________
+
+node = <patrol.patrol.PatrolNode object at 0xffff158d7610>, bad = 0.0
+
+    @pytest.mark.parametrize('bad', [0.0, -5.0, float('nan'), float('inf'), 31.0])
+    def test_bad_hz_is_rejected_and_state_is_kept(node, bad):
+        old_timer = node._timer
+    
+>       result = node.set_parameters([Parameter('publish_hz', value=bad)])[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/patrol/test/test_params_node.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:773: in set_parameters
+    result = self._set_parameters_atomically([param])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:890: in _set_parameters_atomically_common
+    result = callback(parameter_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+build/patrol/patrol/patrol.py:74: in _on_set_parameters
+    self._restart_timer(param.value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <patrol.patrol.PatrolNode object at 0xffff158d7610>, hz = 0.0
+
+    def _restart_timer(self, hz):
+>       new_timer = self.create_timer(1.0 / hz, self._on_timer)
+                                      ^^^^^^^^
+E       ZeroDivisionError: division by zero
+
+build/patrol/patrol/patrol.py:78: ZeroDivisionError
+_______________ test_bad_hz_is_rejected_and_state_is_kept[-5.0] ________________
+
+node = <patrol.patrol.PatrolNode object at 0xffff158d79d0>, bad = -5.0
+
+    @pytest.mark.parametrize('bad', [0.0, -5.0, float('nan'), float('inf'), 31.0])
+    def test_bad_hz_is_rejected_and_state_is_kept(node, bad):
+        old_timer = node._timer
+    
+>       result = node.set_parameters([Parameter('publish_hz', value=bad)])[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/patrol/test/test_params_node.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:773: in set_parameters
+    result = self._set_parameters_atomically([param])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:890: in _set_parameters_atomically_common
+    result = callback(parameter_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+build/patrol/patrol/patrol.py:74: in _on_set_parameters
+    self._restart_timer(param.value)
+build/patrol/patrol/patrol.py:78: in _restart_timer
+    new_timer = self.create_timer(1.0 / hz, self._on_timer)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:2521: in create_timer
+    timer = Timer(
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/timer.py:207: in __init__
+    super().__init__(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.timer.Timer object at 0xffff158f27a0>
+callback = <bound method PatrolNode._on_timer of <patrol.patrol.PatrolNode object at 0xffff158d79d0>>
+timer_period_ns = -200000000, clock = Clock(clock_type=ROS_TIME)
+
+    def __init__(
+        self,
+        callback: Optional[TimerCallbackUnion],
+        timer_period_ns: int,
+        clock: Clock,
+        *,
+        on_destroy: Optional[Callable[['BaseTimer'], None]] = None,
+        context: Optional[Context] = None,
+        autostart: bool = True
+    ) -> None:
+        """
+        Create a timer.
+    
+        .. warning:: Users should not create a timer with this constructor, instead they
+           should call :meth:`.Node.create_timer` or :meth:`.AsyncNode.create_timer`.
+        """
+        self._context = get_default_context() if context is None else context
+        self._clock = clock
+        if self._context.handle is None:
+            raise RuntimeError('Context must be initialized before create a _rclpy.Timer.')
+        with self._clock.handle, self._context.handle:
+>           self.__timer = _rclpy.Timer(
+                self._clock.handle, self._context.handle, timer_period_ns, autostart)
+E           rclpy._rclpy_pybind11.RCLError: failed to create timer: timer period must be non-negative, at ./src/rcl/timer.c:117
+
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/timer.py:99: RCLError
+________________ test_bad_hz_is_rejected_and_state_is_kept[nan] ________________
+
+node = <patrol.patrol.PatrolNode object at 0xffff158d7ed0>, bad = nan
+
+    @pytest.mark.parametrize('bad', [0.0, -5.0, float('nan'), float('inf'), 31.0])
+    def test_bad_hz_is_rejected_and_state_is_kept(node, bad):
+        old_timer = node._timer
+    
+>       result = node.set_parameters([Parameter('publish_hz', value=bad)])[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/patrol/test/test_params_node.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:773: in set_parameters
+    result = self._set_parameters_atomically([param])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:840: in _set_parameters_atomically
+    return self._set_parameters_atomically_common(parameter_list)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:890: in _set_parameters_atomically_common
+    result = callback(parameter_list)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+build/patrol/patrol/patrol.py:74: in _on_set_parameters
+    self._restart_timer(param.value)
+build/patrol/patrol/patrol.py:78: in _restart_timer
+    new_timer = self.create_timer(1.0 / hz, self._on_timer)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <patrol.patrol.PatrolNode object at 0xffff158d7ed0>
+timer_period_sec = nan
+callback = <bound method PatrolNode._on_timer of <patrol.patrol.PatrolNode object at 0xffff158d7ed0>>
+callback_group = None, clock = None, autostart = True
+
+    def create_timer(
+        self,
+        timer_period_sec: float,
+        callback: Optional[TimerCallbackUnion],
+        callback_group: Optional[CallbackGroup] = None,
+        clock: Optional[Clock] = None,
+        autostart: bool = True,
+    ) -> Timer:
+        """
+        Create a new timer.
+    
+        If autostart is ``True`` (the default), the timer will be started and every
+        ``timer_period_sec`` number of seconds the provided callback function will be called.
+        If autostart is ``False``, the timer will be created but not started; it can then be
+        started by calling ``reset()`` on the timer object.
+    
+        :param timer_period_sec: The period (in seconds) of the timer.
+        :param callback: A user-defined callback function that is called when the timer expires.
+        :param callback_group: The callback group for the timer. If ``None``, then the
+            default callback group for the node is used.
+        :param clock: The clock which the timer gets time from.
+        :param autostart: Whether to automatically start the timer after creation; defaults to
+            ``True``.
+        """
+>       timer_period_nsec = int(float(timer_period_sec) * S_TO_NS)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: cannot convert float NaN to integer
+
+/opt/ros/lyrical/lib/python3.14/site-packages/rclpy/node.py:2516: ValueError
+________________ test_bad_hz_is_rejected_and_state_is_kept[inf] ________________
+
+node = <patrol.patrol.PatrolNode object at 0xffff157ec2d0>, bad = inf
+
+    @pytest.mark.parametrize('bad', [0.0, -5.0, float('nan'), float('inf'), 31.0])
+    def test_bad_hz_is_rejected_and_state_is_kept(node, bad):
+        old_timer = node._timer
+    
+        result = node.set_parameters([Parameter('publish_hz', value=bad)])[0]
+    
+>       assert result.successful is False
+E       AssertionError: assert True is False
+E        +  where True = rcl_interfaces.msg.SetParametersResult(successful=True, reason='').successful
+
+src/patrol/test/test_params_node.py:54: AssertionError
+_______________ test_bad_hz_is_rejected_and_state_is_kept[31.0] ________________
+
+node = <patrol.patrol.PatrolNode object at 0xffff157ec690>, bad = 31.0
+
+    @pytest.mark.parametrize('bad', [0.0, -5.0, float('nan'), float('inf'), 31.0])
+    def test_bad_hz_is_rejected_and_state_is_kept(node, bad):
+        old_timer = node._timer
+    
+        result = node.set_parameters([Parameter('publish_hz', value=bad)])[0]
+    
+>       assert result.successful is False
+E       AssertionError: assert True is False
+E        +  where True = rcl_interfaces.msg.SetParametersResult(successful=True, reason='').successful
+
+src/patrol/test/test_params_node.py:54: AssertionError
+____________________ test_invalid_startup_value_is_refused _____________________
+
+    def test_invalid_startup_value_is_refused():
+        rclpy.init(args=['--ros-args', '-p', 'publish_hz:=0.0'])
+        try:
+            with pytest.raises(ValueError):
+>               PatrolNode()
+
+src/patrol/test/test_params_node.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <patrol.patrol.PatrolNode object at 0xffff157ecb90>
+
+    def __init__(self):
+        super().__init__('patrol')
+        self.declare_parameter('linear_speed', DEFAULT_LINEAR_SPEED)
+        self.declare_parameter('turn_rate', DEFAULT_TURN_RATE)
+        self.declare_parameter('publish_hz', DEFAULT_PUBLISH_HZ)
+        for name in PARAM_RANGES:
+            ok, reason = validate_param(name, self.get_parameter(name).value)
+            if not ok:
+                raise ValueError(reason)
+    
+        self._last_pose = None
+        self._pose_sub = self.create_subscription(
+            Pose, '/turtle1/pose', self._on_pose, 10)
+        self._cmd_pub = self.create_publisher(Twist, 'cmd_vel', 10)
+        self._timer = self.create_timer(
+>           1.0 / self.get_parameter('publish_hz').value, self._on_timer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ZeroDivisionError: division by zero
+
+build/patrol/patrol/patrol.py:59: ZeroDivisionError
+=========================== short test summary info ============================
+FAILED src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.0]
+FAILED src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz--5.0]
+FAILED src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.9]
+FAILED src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-30.1]
+FAILED src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[nan]
+FAILED src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[inf]
+FAILED src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[-inf]
+FAILED src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[0.0]
+FAILED src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[-5.0]
+FAILED src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[nan]
+FAILED src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[inf]
+FAILED src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[31.0]
+FAILED src/patrol/test/test_params_node.py::test_invalid_startup_value_is_refused
+======================== 13 failed, 24 passed in 7.89s =========================
+exit=1

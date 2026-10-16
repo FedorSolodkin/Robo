@@ -1,0 +1,5 @@
+$ bash -c for p in linear_speed turn_rate publish_hz; do ros2 param get /patrol $p; done
+Double value is: 0.5
+Double value is: -0.5
+Double value is: 5.0
+exit=0

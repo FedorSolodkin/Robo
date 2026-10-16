@@ -1,0 +1,6 @@
+$ ros2 param get /patrol linear_speed
+Double value is: 0.5
+$ ros2 param get /patrol turn_rate
+Double value is: 0.3
+$ ros2 param get /patrol publish_hz
+Double value is: 10.0

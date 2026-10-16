@@ -1,0 +1,3 @@
+$ timeout 30 ros2 param get /patrol publish_hz
+Double value is: 10.0
+exit=0
