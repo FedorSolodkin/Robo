@@ -1,0 +1,85 @@
+# PR05 qos-before: reliable subscriber against a best_effort sensor
+# ROS_DOMAIN_ID=16  RMW=default  (echo timeout raised 3s -> 30s: emulated amd64 container)
+
+### $ ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false
+
+### $ ros2 node list --no-daemon --spin-time 2
+/robot_a/patrol
+/robot_a/pose_relay
+/robot_a/sensor_listener
+/turtlesim
+
+### $ ros2 topic list -t --no-daemon  (topic IS visible)
+/robot_a/sensor_pose [turtlesim_msgs/msg/Pose]
+/turtle1/cmd_vel [geometry_msgs/msg/Twist]
+/turtle1/pose [turtlesim_msgs/msg/Pose]
+
+### $ ros2 topic info /robot_a/sensor_pose --verbose  (publisher best_effort, subscriber reliable)
+Type: turtlesim_msgs/msg/Pose
+
+Publisher count: 1
+
+Node name: pose_relay
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.62.0c.bf.35.00.00.00.00.00.00.13.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: sensor_listener
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.65.0c.5f.07.00.00.00.00.00.00.13.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+
+### $ ros2 topic info /turtle1/cmd_vel  (patrol remapped into the global turtle)
+Type: geometry_msgs/msg/Twist
+Publisher count: 1
+Subscription count: 1
+
+### $ pgrep -af "ros2 bag record"  (record:=false, so the recorder must NOT run)
+(no recorder process)
+
+### $ timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once
+[WARN] [1792692074.769948506] [_ros2cli_3391]: New publisher discovered on topic '/robot_a/sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+!rclpy.ok()
+exit code: 124  (124 = timeout: no message arrived)
+bytes received: 219
+
+### $ listener log (sensor_listener, from the launch output)
+[INFO] [sensor_listener-4]: process started with pid [3173]
+[pose_relay-3] [WARN] [1792692031.000656583] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+[sensor_listener-4] [INFO] [1792692031.014415458] [robot_a.sensor_listener]: listening on /robot_a/sensor_pose with reliability=reliable
+[sensor_listener-4] [WARN] [1792692031.039731458] [robot_a.sensor_listener]: incompatible QoS on /robot_a/sensor_pose: total_count=1, last_policy_kind=rmw_qos_policy_kind_t.RMW_QOS_POLICY_RELIABILITY
+[pose_relay-3] [WARN] [1792692074.669884256] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+messages received by the reliable listener: 0
+
+### REPLAY (same recorded bag, override config/qos-overrides.yaml) -- reliable echo
+
+### $ ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml --loop
+
+### $ timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once   (during replay)
+[WARN] [1792692213.413898959] [_ros2cli_3900]: New publisher discovered on topic '/robot_a/sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+!rclpy.ok()
+exit code: 124  (124 = timeout: no message arrived)
+bytes received: 219

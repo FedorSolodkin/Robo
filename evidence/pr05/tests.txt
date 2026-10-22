@@ -1,0 +1,85 @@
+$ python3 -m pytest src/patrol/test -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /work/src/patrol
+plugins: launch_testing_ros-0.29.8, ament_xmllint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_lint-0.20.6, launch_testing-3.9.7, ament_flake8-0.20.6, ament_mypy-0.20.6, typeguard-4.4.4, colcon-core-0.21.0
+collecting ... collected 45 items
+src/patrol/test/test_choose_cmd.py::test_no_pose_gives_zero_command_whatever_the_params PASSED [  2%]
+src/patrol/test/test_choose_cmd.py::test_pose_gives_configured_command PASSED [  4%]
+src/patrol/test/test_choose_cmd.py::test_command_follows_changed_params PASSED [  6%]
+src/patrol/test/test_copyright.py::test_copyright SKIPPED (No copyri...) [  8%]
+src/patrol/test/test_flake8.py::test_flake8 PASSED                       [ 11%]
+src/patrol/test/test_mypy.py::test_mypy PASSED                           [ 13%]
+src/patrol/test/test_params_node.py::test_defaults PASSED                [ 15%]
+src/patrol/test/test_params_node.py::test_valid_hz_change_recreates_the_timer PASSED [ 17%]
+src/patrol/test/test_params_node.py::test_old_timer_is_stopped_and_only_one_timer_remains PASSED [ 20%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[0.0] PASSED [ 22%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[-5.0] PASSED [ 24%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[nan] PASSED [ 26%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[inf] PASSED [ 28%]
+src/patrol/test/test_params_node.py::test_bad_hz_is_rejected_and_state_is_kept[31.0] PASSED [ 31%]
+src/patrol/test/test_params_node.py::test_bad_value_in_a_batch_changes_nothing PASSED [ 33%]
+src/patrol/test/test_params_node.py::test_speed_and_turn_changes_are_validated PASSED [ 35%]
+src/patrol/test/test_params_node.py::test_foreign_parameters_are_not_blocked PASSED [ 37%]
+src/patrol/test/test_params_node.py::test_invalid_startup_value_is_refused PASSED [ 40%]
+src/patrol/test/test_pep257.py::test_pep257 PASSED                       [ 42%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-0.0] PASSED [ 44%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-0.5] PASSED [ 46%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[linear_speed-1.0] PASSED [ 48%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate--1.0] PASSED [ 51%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate-0.3] PASSED [ 53%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[turn_rate-1.0] PASSED [ 55%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-1.0] PASSED [ 57%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-5.0] PASSED [ 60%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-10.0] PASSED [ 62%]
+src/patrol/test/test_validate_param.py::test_accepts_values_inside_the_range[publish_hz-30.0] PASSED [ 64%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[linear_speed--0.1] PASSED [ 66%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[linear_speed-1.1] PASSED [ 68%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[turn_rate--1.1] PASSED [ 71%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[turn_rate-1.1] PASSED [ 73%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.0] PASSED [ 75%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz--5.0] PASSED [ 77%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-0.9] PASSED [ 80%]
+src/patrol/test/test_validate_param.py::test_rejects_values_outside_the_range[publish_hz-30.1] PASSED [ 82%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[nan] PASSED [ 84%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[inf] PASSED [ 86%]
+src/patrol/test/test_validate_param.py::test_rejects_non_finite_values[-inf] PASSED [ 88%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[fast] PASSED [ 91%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[None] PASSED [ 93%]
+src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[True] PASSED [ 95%]
+src/patrol/test/test_validate_param.py::test_change_from_10_to_5_hz_is_allowed PASSED [ 97%]
+src/patrol/test/test_xmllint.py::test_xmllint PASSED                     [100%]
+=================== 44 passed, 1 skipped in 75.37s (0:01:15) ===================
+PYTEST_PATROL_EXIT=0
+
+$ python3 -m pytest src/course_bringup/test -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /work/src/course_bringup
+plugins: launch_testing_ros-0.29.8, ament_xmllint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_lint-0.20.6, launch_testing-3.9.7, ament_flake8-0.20.6, ament_mypy-0.20.6, typeguard-4.4.4, colcon-core-0.21.0
+collecting ... collected 21 items
+
+src/course_bringup/test/test_copyright.py::test_copyright SKIPPED (N...) [  4%]
+src/course_bringup/test/test_flake8.py::test_flake8 PASSED               [  9%]
+src/course_bringup/test/test_launch_file.py::test_declares_the_four_arguments_with_defaults PASSED [ 14%]
+src/course_bringup/test/test_launch_file.py::test_recorder_is_started_through_if_condition PASSED [ 19%]
+src/course_bringup/test/test_launch_file.py::test_launches_turtlesim_and_the_three_robot_nodes PASSED [ 23%]
+src/course_bringup/test/test_mypy.py::test_mypy PASSED                   [ 28%]
+src/course_bringup/test/test_nodes_qos.py::test_relay_publishes_best_effort_on_a_relative_topic PASSED [ 33%]
+src/course_bringup/test/test_nodes_qos.py::test_listener_reliability_comes_from_the_parameter PASSED [ 38%]
+src/course_bringup/test/test_nodes_qos.py::test_listener_default_is_reliable_and_bad_value_is_rejected PASSED [ 42%]
+src/course_bringup/test/test_nodes_qos.py::test_reliable_listener_gets_nothing_and_reports_incompatible_qos PASSED [ 47%]
+src/course_bringup/test/test_nodes_qos.py::test_best_effort_listener_receives_the_relayed_pose PASSED [ 52%]
+src/course_bringup/test/test_pep257.py::test_pep257 PASSED               [ 57%]
+src/course_bringup/test/test_qos.py::test_parse_known_names PASSED       [ 61%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[] PASSED [ 66%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[RELIABLE] PASSED [ 71%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[besteffort] PASSED [ 76%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[None] PASSED [ 80%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[1] PASSED [ 85%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[True] PASSED [ 90%]
+src/course_bringup/test/test_qos.py::test_profile_is_keep_last_depth_10 PASSED [ 95%]
+src/course_bringup/test/test_xmllint.py::test_xmllint PASSED             [100%]
+
+=================== 20 passed, 1 skipped in 80.06s (0:01:20) ===================
+PYTEST_COURSE_BRINGUP_EXIT=0

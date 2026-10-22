@@ -1,0 +1,26 @@
+$ ros2 launch course_bringup patrol.launch.py --show-args
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'namespace':
+        Namespace of the whole robot system
+        (default: 'robot_a')
+
+    'record':
+        true: also start ros2 bag record (MCAP) for sensor_pose
+        (default: 'false')
+
+    'bag_dir':
+        Output directory of the recording (must not exist yet)
+        (default: 'bags/robot_a')
+
+    'subscriber_reliability':
+        QoS reliability of the sensor_listener: reliable or best_effort
+        (default: 'best_effort')
+exit code: 0
+
+$ ros2 pkg executables course_bringup
+course_bringup pose_relay
+course_bringup sensor_listener
+
+$ ros2 pkg prefix course_bringup
+/work/install/course_bringup

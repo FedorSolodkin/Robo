@@ -1,0 +1,119 @@
+# PR05 qos-after: same system, subscriber_reliability:=best_effort, record:=true
+# ROS_DOMAIN_ID=16  (echo timeout raised 3s -> 30s: emulated amd64 container)
+
+### $ ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag
+
+### $ ros2 node list --no-daemon --spin-time 2
+/robot_a/patrol
+/robot_a/pose_relay
+/robot_a/sensor_listener
+/rosbag2_recorder
+/turtlesim
+
+### $ ros2 topic info /robot_a/sensor_pose --verbose
+Type: turtlesim_msgs/msg/Pose
+
+Publisher count: 1
+
+Node name: pose_relay
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.97.0d.b2.54.00.00.00.00.00.00.13.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 2
+
+Node name: sensor_listener
+Node namespace: /robot_a
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.9a.0d.f7.73.00.00.00.00.00.00.13.04
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Node name: rosbag2_recorder
+Node namespace: /
+Topic type: turtlesim_msgs/msg/Pose
+Topic type hash: RIHS01_37b07ace09a0ed2c5b774b1410dec972dfd1d292de5656ebc2b075ac646e09c8
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.9d.0d.1f.70.00.00.00.00.00.00.26.04
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+
+### $ pgrep -af "ros2 bag record"  (record:=true, one recorder)
+3485 /usr/bin/qemu-x86_64 /usr/bin/python3 /usr/bin/python3 /opt/ros/lyrical/bin/ros2 bag record -s mcap -o evidence/pr05/bag --topics /robot_a/sensor_pose
+
+### $ timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once
+x: 5.516408443450928
+y: 8.877602577209473
+theta: -3.129570484161377
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
+exit code: 0  (0 = a message arrived)
+
+### $ listener log (best_effort sensor_listener)
+[sensor_listener-4] [INFO] [1792692111.300508426] [robot_a.sensor_listener]: listening on /robot_a/sensor_pose with reliability=best_effort
+[sensor_listener-4] [INFO] [1792692111.315474676] [robot_a.sensor_listener]: received #1: x=5.54 y=5.54
+[sensor_listener-4] [INFO] [1792692113.324624302] [robot_a.sensor_listener]: received #132: x=6.36 y=5.76
+[sensor_listener-4] [INFO] [1792692115.326220053] [robot_a.sensor_listener]: received #257: x=7.03 y=6.47
+[sensor_listener-4] [INFO] [1792692117.342100679] [robot_a.sensor_listener]: received #383: x=7.19 y=7.45
+[sensor_listener-4] [INFO] [1792692119.352686096] [robot_a.sensor_listener]: received #507: x=6.77 y=8.34
+listener lines 'received #': 17
+listener lines 'incompatible': 0
+total 200
+drwxr-xr-x 4 root root    128 Oct 22 18:03 .
+drwxr-xr-x 5 root root    160 Oct 22 18:02 ..
+-rw-r--r-- 1 root root 177297 Oct 22 18:03 0_bag_2026_10_22-18_01_52.mcap
+-rw-r--r-- 1 root root   1333 Oct 22 18:03 metadata.yaml
+
+### REPLAY (same recorded bag, override config/qos-overrides.yaml) -- best_effort echo
+
+### $ timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once   (during replay)
+x: 4.405834197998047
+y: 8.431944847106934
+theta: -2.3951852321624756
+linear_velocity: 0.5
+angular_velocity: 0.30000001192092896
+---
+exit code: 0  (0 = a message arrived)
+
+
+### $ ros2 bag info evidence/pr05/bag
+
+Files:             0_bag_2026_10_22-18_01_52.mcap
+Bag size:          174.4 KiB
+Storage id:        mcap
+ROS Distro:        lyrical
+Duration:          39.236269240s
+Start:             Oct 22 2026 18:01:52.920321260 (1792692112.920321260)
+End:               Oct 22 2026 18:02:32.156590500 (1792692152.156590500)
+Messages:          2447
+Topic information: Topic: /robot_a/sensor_pose | Type: turtlesim_msgs/msg/Pose | Count: 2447 | Serialization Format: cdr
+Services:          0
+Service information: 
+Actions:           0
+Action information: 

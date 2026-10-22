@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR05",
+  "commit": "fd2e3753a46132f0ce4f6047c41f54b9298ee15a",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select patrol course_bringup",
+    "python3 -m pytest src/patrol/test -v",
+    "python3 -m pytest src/course_bringup/test -v",
+    "ros2 launch course_bringup patrol.launch.py --show-args",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false",
+    "ros2 node list --no-daemon --spin-time 2",
+    "ros2 topic list -t --no-daemon",
+    "ros2 topic info /robot_a/sensor_pose --verbose",
+    "timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag",
+    "timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once",
+    "ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml --loop",
+    "ros2 bag info evidence/pr05/bag",
+    "cp evidence/pr05/bag/metadata.yaml evidence/pr05/bag-metadata.yaml",
+    "python3 .course-kit/v1/tools/check_practice.py PR05 --submission ."
+  ],
+  "tests": [
+    {"name": "pytest src/patrol/test: 44 passed, 1 skipped (generated copyright test)", "status": "passed"},
+    {"name": "pytest src/course_bringup/test: 20 passed, 1 skipped (generated copyright test)", "status": "passed"},
+    {"name": "make_qos/parse_reliability: keep_last depth 10, reliable|best_effort only, bad names rejected", "status": "passed"},
+    {"name": "launch file declares namespace, record, bag_dir, subscriber_reliability and starts the recorder through IfCondition", "status": "passed"},
+    {"name": "in-process: reliable listener gets 0 messages and reports incompatible QoS; best_effort listener receives the relayed pose", "status": "passed"},
+    {"name": "live: system runs in /robot_a, turtlesim is global, patrol output remapped into /turtle1/cmd_vel", "status": "passed"},
+    {"name": "live: record:=false starts no recorder, record:=true starts exactly one", "status": "passed"},
+    {"name": "live: reliable echo on /robot_a/sensor_pose times out (exit 124) while the topic is listed and has 1 publisher and 1 subscriber", "status": "passed"},
+    {"name": "live: best_effort echo on the same topic receives a pose (exit 0) and the listener logs received messages", "status": "passed"},
+    {"name": "replay of the same MCAP with config/qos-overrides.yaml: reliable echo times out, best_effort echo receives a pose", "status": "passed"},
+    {"name": "ros2 bag info: storage mcap, one topic /robot_a/sensor_pose, 2447 messages", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false, then `timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once`. The topic is in `ros2 topic list`, `ros2 topic info --verbose` shows 1 publisher (pose_relay, BEST_EFFORT) and 1 subscription (sensor_listener, RELIABLE), but no message ever arrives: echo exits 124, the listener received 0 messages (evidence/pr05/qos-before.txt).",
+    "root_cause": "A RELIABLE subscription requests more than a BEST_EFFORT publisher offers. QoS compatibility is checked per endpoint pair: when the requested reliability is stronger than the offered one the pair is incompatible and DDS delivers nothing, although the topic name and type match and both endpoints are discovered. The only symptom is a warning about incompatible QoS (RELIABILITY) from rclpy/ros2cli and the incompatible-QoS event of the subscription.",
+    "proof_after": "With subscriber_reliability:=best_effort (and --qos-reliability best_effort for echo) the same topic delivers: echo exits 0 with a Pose, the listener logs received messages and no incompatible-QoS event, and ros2 bag record -s mcap stores 2447 messages of one stream. Playing that same bag with config/qos-overrides.yaml reproduces both outcomes: reliable echo times out, best_effort echo receives a pose (evidence/pr05/qos-after.txt, bag-metadata.yaml)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true,
+    "replay_verified": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}
