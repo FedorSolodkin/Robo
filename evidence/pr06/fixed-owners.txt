@@ -1,0 +1,48 @@
+
+### $ ros2 node list --no-daemon --spin-time 2
+/robot_state_publisher
+
+### $ ros2 topic list -t --no-daemon | grep -E "tf|robot_description"
+/robot_description [std_msgs/msg/String]
+/tf [tf2_msgs/msg/TFMessage]
+/tf_static [tf2_msgs/msg/TFMessage]
+
+### $ ros2 topic info /tf_static --verbose
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Endpoint type: PUBLISHER
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (1)
+  Durability: TRANSIENT_LOCAL
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+
+### $ ros2 topic info /tf --verbose   (no joint_states yet: nobody publishes moving frames)
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Endpoint type: PUBLISHER
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (100)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0

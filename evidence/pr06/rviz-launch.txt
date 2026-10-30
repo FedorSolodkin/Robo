@@ -1,0 +1,14 @@
+$ ros2 launch course_description display.launch.py rviz:=true   (observed for 75 s)
+$ ros2 node list --no-daemon --spin-time 2
+/robot_state_publisher
+
+--- launch log (rviz2 lines, errors, warnings)
+[INFO] [rviz2-2]: process started with pid [2726]
+[robot_state_publisher-1] [WARN] [1793340790.946285793] [kdl_parser]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+[rviz2-2] [ERROR] [1793340791.318061918] [rviz2]: Could not open file: /root/.rviz2/persistent_settings
+[rviz2-2] No matching fbConfigs or visuals found
+[rviz2-2] glx: failed to create drisw screen
+[rviz2-2] qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+[ERROR] [rviz2-2]: process has died [pid 2726, exit code -11, cmd '/opt/ros/lyrical/lib/rviz2/rviz2 -d /work/install/course_description/share/course_description/rviz/vehicle.rviz --ros-args -r __node:=rviz2'].
+
+rviz2 process alive: no

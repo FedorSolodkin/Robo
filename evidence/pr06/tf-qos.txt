@@ -1,0 +1,105 @@
+## topic info /tf_static
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Topic type hash: RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.ec.02.14.de.00.00.00.00.00.00.16.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (1)
+  Durability: TRANSIENT_LOCAL
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: transform_listener_impl_5555558cbca0
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Topic type hash: RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+Endpoint type: SUBSCRIPTION
+GID: 01.0f.eb.7d.a6.03.62.3f.00.00.00.00.00.00.17.04
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (100)
+  Durability: TRANSIENT_LOCAL
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+## echo transient_local   (timeout 30 instead of 4: emulated amd64 container)
+transforms:
+- header:
+    stamp:
+      sec: 1793340031
+      nanosec: 938405928
+    frame_id: base_link
+  child_frame_id: camera_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1793340031
+      nanosec: 938405928
+    frame_id: base_link
+  child_frame_id: imu_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1793340031
+      nanosec: 938405928
+    frame_id: base_link
+  child_frame_id: lidar_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---
+exit=0
+## echo volatile   (timeout 30)
+!rclpy.ok()
+exit=124
+
+## Пояснение: чем /tf отличается от /tf_static по профилю
+/tf_static публикуется с RELIABLE + TRANSIENT_LOCAL, глубина 1: издатель хранит последнее
+сообщение и отдаёт его каждому новому подписчику с таким же профилем. Поэтому echo с
+`--qos-durability transient_local` напечатал три преобразования (exit=0), а с `volatile` не
+получил ничего (exit=124): volatile-подписчик видит только то, что опубликовано после его
+подключения, а статические преобразования опубликованы один раз при старте.
+/tf (fixed-owners.txt) публикуется с RELIABLE + VOLATILE, глубина 100: подвижные звенья
+обновляются много раз в секунду, старые значения быстро теряют смысл, поэтому история не
+хранится и поздний подписчик получает только свежие данные. Это согласуется с тем, как меняются
+данные: неизменные хранятся и отдаются позже, меняющиеся только передаются «вживую».
+(Таймаут команд echo поднят с 4 до 30 секунд: контейнер идёт под эмуляцией amd64, одна команда
+`ros2` стартует несколько секунд.)

@@ -1,0 +1,58 @@
+$ python3 -m pytest src/course_description/test -v --tb=short -p no:cacheprovider
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /work/src/course_description
+plugins: launch_testing_ros-0.29.8, ament_xmllint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_lint-0.20.6, launch_testing-3.9.7, ament_flake8-0.20.6, ament_mypy-0.20.6, typeguard-4.4.4, colcon-core-0.21.0
+collecting ... collected 22 items
+src/course_description/test/test_copyright.py::test_copyright SKIPPED    [  4%]
+src/course_description/test/test_flake8.py::test_flake8 PASSED           [  9%]
+src/course_description/test/test_model.py::test_xacro_expands_to_a_robot PASSED [ 13%]
+src/course_description/test/test_model.py::test_tree_is_connected_acyclic_and_rooted_at_base_link PASSED [ 18%]
+src/course_description/test/test_model.py::test_every_link_has_the_expected_parent FAILED [ 22%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[camera_link] PASSED [ 27%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[front_left_wheel] PASSED [ 31%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[front_right_wheel] PASSED [ 36%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[imu_link] PASSED [ 40%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[lidar_link] FAILED [ 45%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[rear_left_wheel] PASSED [ 50%]
+src/course_description/test/test_model.py::test_frame_position_in_base_link[rear_right_wheel] PASSED [ 54%]
+src/course_description/test/test_model.py::test_joint_types_axes_and_limits PASSED [ 59%]
+src/course_description/test/test_model.py::test_geometry_parameters_are_xacro_arguments PASSED [ 63%]
+src/course_description/test/test_model.py::test_visual_and_collision_are_separate_elements PASSED [ 68%]
+src/course_description/test/test_model.py::test_inertia_is_physically_possible PASSED [ 72%]
+src/course_description/test/test_model.py::test_numbers_are_in_si_units PASSED [ 77%]
+src/course_description/test/test_model.py::test_check_urdf_accepts_the_expanded_model PASSED [ 81%]
+src/course_description/test/test_model.py::test_frames_report_command_succeeds PASSED [ 86%]
+src/course_description/test/test_mypy.py::test_mypy PASSED               [ 90%]
+src/course_description/test/test_pep257.py::test_pep257 PASSED           [ 95%]
+src/course_description/test/test_xmllint.py::test_xmllint PASSED         [100%]
+=================================== FAILURES ===================================
+___________________ test_every_link_has_the_expected_parent ____________________
+src/course_description/test/test_model.py:59: in test_every_link_has_the_expected_parent
+    assert parents == EXPECTED_PARENTS
+E   AssertionError: assert {'camera_link...se_link', ...} == {'camera_link...se_link', ...}
+E     
+E     Omitting 8 identical items, use -vv to show
+E     Differing items:
+E     {'lidar_link': 'camera_link'} != {'lidar_link': 'base_link'}
+E     
+E     Full diff:
+E       {...
+E     
+E     ...Full output truncated (13 lines hidden), use '-vv' to show
+_________________ test_frame_position_in_base_link[lidar_link] _________________
+src/course_description/test/test_model.py:64: in test_frame_position_in_base_link
+    assert pose_in(joints, frame) == pytest.approx(EXPECTED_POSITIONS[frame], abs=1e-9)
+E   assert (0.56, 0.0, 0.76) == approx((0.28 ...38 ± 1.0e-09))
+E     
+E     comparison failed. Mismatched elements: 2 / 3:
+E     Max absolute difference: 0.38
+E     Max relative difference: 0.5
+E     Index | Obtained | Expected      
+E     0     | 0.56     | 0.28 ± 1.0e-09
+E     2     | 0.76     | 0.38 ± 1.0e-09
+=========================== short test summary info ============================
+FAILED src/course_description/test/test_model.py::test_every_link_has_the_expected_parent
+FAILED src/course_description/test/test_model.py::test_frame_position_in_base_link[lidar_link]
+============== 2 failed, 19 passed, 1 skipped in 72.79s (0:01:12) ==============
+PYTEST_EXIT=1

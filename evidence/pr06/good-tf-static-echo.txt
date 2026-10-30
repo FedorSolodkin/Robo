@@ -1,0 +1,25 @@
+$ ros2 topic echo /tf_static --once
+    frame_id: base_link
+  child_frame_id: camera_link
+      x: 0.28
+      y: 0.0
+      z: 0.38
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    frame_id: base_link
+  child_frame_id: imu_link
+      x: 0.28
+      y: 0.0
+      z: 0.38
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    frame_id: base_link
+  child_frame_id: lidar_link
+      x: 0.28
+      y: 0.0
+      z: 0.38
+      x: 0.0
+      y: 0.0
+      z: 0.0

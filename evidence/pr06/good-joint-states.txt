@@ -1,0 +1,24 @@
+$ ros2 topic pub -r 10 /joint_states sensor_msgs/msg/JointState ... (steering 0.3 rad)
+$ timeout 25 ros2 run tf2_ros tf2_echo base_link front_left_wheel
+[INFO] [1793340147.805489093] [tf2_echo]: Waiting for transform base_link ->  front_left_wheel: Invalid frame ID "base_link" passed to canTransform argument target_frame - frame does not exist
+At time 1793340148.390419884
+- Translation: [0.400, 0.310, 0.000]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.149, 0.989]
+- Rotation: in RPY (radian) [0.000, -0.000, 0.300]
+- Rotation: in RPY (degree) [0.000, -0.000, 17.189]
+- Matrix:
+  0.955 -0.296  0.000  0.400
+  0.296  0.955  0.000  0.310
+  0.000  0.000  1.000  0.000
+  0.000  0.000  0.000  1.000
+At time 1793340149.290892843
+- Translation: [0.400, 0.310, 0.000]
+- Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.149, 0.989]
+
+### $ ros2 topic info /tf --verbose  (with joint_states: still ONE publisher of /tf)
+Publisher count: 1
+Node name: robot_state_publisher
+Node namespace: /
+Subscription count: 1
+Node name: transform_listener_impl_5555558cd900
+Node namespace: /

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR06",
+  "commit": "b5e71f945e0dcbc4655036899434d3539dbb8c18",
+  "course_kit": {
+    "version": "v1-w06",
+    "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select patrol course_bringup course_description",
+    "xacro src/course_description/urdf/vehicle.urdf.xacro > /tmp/vehicle.urdf",
+    "check_urdf /tmp/vehicle.urdf",
+    "ros2 run course_description frames_report",
+    "colcon test --packages-select course_description",
+    "python3 -m pytest src/course_description/test -v",
+    "ros2 launch course_description display.launch.py",
+    "ros2 topic info /tf_static --verbose",
+    "timeout 30 ros2 topic echo /tf_static --once --qos-durability transient_local --qos-reliability reliable",
+    "timeout 30 ros2 topic echo /tf_static --once --qos-durability volatile --qos-reliability reliable",
+    "ros2 run tf2_ros tf2_echo base_link lidar_link",
+    "ros2 run tf2_tools view_frames",
+    "ros2 topic pub -r 10 /joint_states sensor_msgs/msg/JointState '{header: auto, name: [...], position: [...]}'",
+    "git checkout -b defect/pr06-lidar-parent",
+    "python3 .course-kit/v1/tools/check_practice.py PR06 --submission ."
+  ],
+  "tests": [
+    {"name": "colcon test course_description: 22 tests, 0 errors, 0 failures, 1 skipped (generated copyright test)", "status": "passed"},
+    {"name": "xacro expands vehicle.urdf.xacro and check_urdf parses it: root base_link with 7 children, 10 links", "status": "passed"},
+    {"name": "joint tree is connected, acyclic, every link has exactly one parent, root is base_link", "status": "passed"},
+    {"name": "every link has the expected parent; lidar_link, camera_link and imu_link sit at (0.28, 0, 0.38) in base_link", "status": "passed"},
+    {"name": "wheel positions, joint types, axes and steering limits match the SDF; wheel_base, track_width and wheel_radius are Xacro arguments", "status": "passed"},
+    {"name": "visual and collision are separate; masses are positive and inertia obeys the triangle inequality", "status": "passed"},
+    {"name": "live: /tf_static is RELIABLE + TRANSIENT_LOCAL; late transient_local echo prints 3 transforms (exit 0), volatile gets nothing (exit 124)", "status": "passed"},
+    {"name": "live: one robot_state_publisher owns /tf and /tf_static; tf2_echo base_link lidar_link = [0.280, 0.000, 0.380]", "status": "passed"},
+    {"name": "defect branch (lidar parent = camera_link): check_urdf and structure check accept it, 2 tests fail (parent, position), tf2_echo shows [0.560, 0.000, 0.760]", "status": "passed"},
+    {"name": "after restoring the parent: the same tests give 21 passed, tf2_echo is back to [0.280, 0.000, 0.380]", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "On branch defect/pr06-lidar-parent (commit 8eb7c525c9d680fe8cf23cab9b44f38a4f31b39a) lidar_link gets camera_link as parent instead of base_link, offset unchanged. check_urdf and the structure check still succeed; `ros2 run tf2_ros tf2_echo base_link lidar_link` reports translation [0.560, 0.000, 0.760] instead of [0.280, 0.000, 0.380], and test_every_link_has_the_expected_parent and test_frame_position_in_base_link[lidar_link] fail (evidence/pr06/defect-*.txt, red CI run 41011891857).",
+    "root_cause": "A fixed joint offset is relative to its parent frame. With camera_link as parent the lidar offset is added to the camera pose (0.28, 0, 0.38), giving (0.56, 0, 0.76). The tree stays connected and acyclic, so a structural check cannot see the mistake: only a check of the expected parent and of the resulting position can.",
+    "proof_after": "With the parent restored to base_link the same tests pass (21 passed, 1 skipped), check_urdf shows lidar_link as a child of base_link, and tf2_echo base_link lidar_link returns [0.280, 0.000, 0.380] (evidence/pr06/fixed-*.txt)."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

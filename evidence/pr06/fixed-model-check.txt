@@ -1,0 +1,32 @@
+$ xacro src/course_description/urdf/vehicle.urdf.xacro > /tmp/vehicle.urdf
+exit=0
+
+$ check_urdf /tmp/vehicle.urdf
+robot name is: course_ackermann
+---------- Successfully Parsed XML ---------------
+root Link: base_link has 7 child(ren)
+    child(1):  camera_link
+    child(2):  front_left_knuckle
+        child(1):  front_left_wheel
+    child(3):  front_right_knuckle
+        child(1):  front_right_wheel
+    child(4):  imu_link
+    child(5):  lidar_link
+    child(6):  rear_left_wheel
+    child(7):  rear_right_wheel
+exit=0
+
+$ ros2 run course_description frames_report
+link               parent             joint type   x       y       z
+base_link          (root)             -             0.000   0.000   0.000
+front_left_knuckle base_link          revolute      0.400   0.310   0.000
+front_right_knuckle base_link          revolute      0.400  -0.310   0.000
+front_left_wheel   front_left_knuckle continuous    0.400   0.310   0.000
+front_right_wheel  front_right_knuckle continuous    0.400  -0.310   0.000
+rear_left_wheel    base_link          continuous   -0.400   0.310   0.000
+rear_right_wheel   base_link          continuous   -0.400  -0.310   0.000
+camera_link        base_link          fixed         0.280   0.000   0.380
+lidar_link         base_link          fixed         0.280   0.000   0.380
+imu_link           base_link          fixed         0.280   0.000   0.380
+structure: OK (single connected tree rooted at base_link)
+exit=0

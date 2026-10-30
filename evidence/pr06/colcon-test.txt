@@ -1,0 +1,9 @@
+$ colcon test --packages-select course_description
+Starting >>> course_description
+Finished <<< course_description [1min 25s]
+
+Summary: 1 package finished [1min 27s]
+exit=0
+
+$ colcon test-result --verbose
+Summary: 22 tests, 0 errors, 0 failures, 1 skipped
