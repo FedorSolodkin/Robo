@@ -49,7 +49,7 @@ src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[None] PA
 src/patrol/test/test_validate_param.py::test_rejects_non_numeric_values[True] PASSED [ 95%]
 src/patrol/test/test_validate_param.py::test_change_from_10_to_5_hz_is_allowed PASSED [ 97%]
 src/patrol/test/test_xmllint.py::test_xmllint PASSED                     [100%]
-=================== 44 passed, 1 skipped in 75.37s (0:01:15) ===================
+=================== 44 passed, 1 skipped in 72.18s (0:01:12) ===================
 PYTEST_PATROL_EXIT=0
 
 $ python3 -m pytest src/course_bringup/test -v
@@ -57,29 +57,41 @@ $ python3 -m pytest src/course_bringup/test -v
 platform linux -- Python 3.14.4, pytest-9.0.2, pluggy-1.6.0 -- /usr/bin/python3
 rootdir: /work/src/course_bringup
 plugins: launch_testing_ros-0.29.8, ament_xmllint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, ament_lint-0.20.6, launch_testing-3.9.7, ament_flake8-0.20.6, ament_mypy-0.20.6, typeguard-4.4.4, colcon-core-0.21.0
-collecting ... collected 21 items
+collecting ... collected 33 items
 
-src/course_bringup/test/test_copyright.py::test_copyright SKIPPED (N...) [  4%]
-src/course_bringup/test/test_flake8.py::test_flake8 PASSED               [  9%]
-src/course_bringup/test/test_launch_file.py::test_declares_the_four_arguments_with_defaults PASSED [ 14%]
-src/course_bringup/test/test_launch_file.py::test_recorder_is_started_through_if_condition PASSED [ 19%]
-src/course_bringup/test/test_launch_file.py::test_launches_turtlesim_and_the_three_robot_nodes PASSED [ 23%]
-src/course_bringup/test/test_mypy.py::test_mypy PASSED                   [ 28%]
-src/course_bringup/test/test_nodes_qos.py::test_relay_publishes_best_effort_on_a_relative_topic PASSED [ 33%]
-src/course_bringup/test/test_nodes_qos.py::test_listener_reliability_comes_from_the_parameter PASSED [ 38%]
-src/course_bringup/test/test_nodes_qos.py::test_listener_default_is_reliable_and_bad_value_is_rejected PASSED [ 42%]
-src/course_bringup/test/test_nodes_qos.py::test_reliable_listener_gets_nothing_and_reports_incompatible_qos PASSED [ 47%]
-src/course_bringup/test/test_nodes_qos.py::test_best_effort_listener_receives_the_relayed_pose PASSED [ 52%]
-src/course_bringup/test/test_pep257.py::test_pep257 PASSED               [ 57%]
-src/course_bringup/test/test_qos.py::test_parse_known_names PASSED       [ 61%]
-src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[] PASSED [ 66%]
-src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[RELIABLE] PASSED [ 71%]
-src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[besteffort] PASSED [ 76%]
-src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[None] PASSED [ 80%]
-src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[1] PASSED [ 85%]
-src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[True] PASSED [ 90%]
-src/course_bringup/test/test_qos.py::test_profile_is_keep_last_depth_10 PASSED [ 95%]
+src/course_bringup/test/test_copyright.py::test_copyright SKIPPED (N...) [  3%]
+src/course_bringup/test/test_flake8.py::test_flake8 PASSED               [  6%]
+src/course_bringup/test/test_launch_file.py::test_declares_the_four_arguments_with_defaults PASSED [  9%]
+src/course_bringup/test/test_launch_file.py::test_recorder_is_started_through_if_condition PASSED [ 12%]
+src/course_bringup/test/test_launch_file.py::test_launches_turtlesim_and_the_three_robot_nodes PASSED [ 15%]
+src/course_bringup/test/test_mypy.py::test_mypy PASSED                   [ 18%]
+src/course_bringup/test/test_nodes_qos.py::test_relay_publishes_best_effort_on_a_relative_topic PASSED [ 21%]
+src/course_bringup/test/test_nodes_qos.py::test_listener_reliability_comes_from_the_parameter PASSED [ 24%]
+src/course_bringup/test/test_nodes_qos.py::test_listener_default_is_reliable_and_bad_value_is_rejected PASSED [ 27%]
+src/course_bringup/test/test_nodes_qos.py::test_reliable_listener_gets_nothing_and_reports_incompatible_qos PASSED [ 30%]
+src/course_bringup/test/test_nodes_qos.py::test_best_effort_listener_receives_the_relayed_pose PASSED [ 33%]
+src/course_bringup/test/test_pep257.py::test_pep257 PASSED               [ 36%]
+src/course_bringup/test/test_pose_follower.py::test_nothing_to_send_before_the_first_pose PASSED [ 39%]
+src/course_bringup/test/test_pose_follower.py::test_first_pose_is_sent PASSED [ 42%]
+src/course_bringup/test/test_pose_follower.py::test_same_pose_is_not_sent_again PASSED [ 45%]
+src/course_bringup/test/test_pose_follower.py::test_any_change_of_x_y_or_theta_is_sent[moved0] PASSED [ 48%]
+src/course_bringup/test/test_pose_follower.py::test_any_change_of_x_y_or_theta_is_sent[moved1] PASSED [ 51%]
+src/course_bringup/test/test_pose_follower.py::test_any_change_of_x_y_or_theta_is_sent[moved2] PASSED [ 54%]
+src/course_bringup/test/test_pose_follower.py::test_subscription_is_best_effort_on_a_relative_topic PASSED [ 57%]
+src/course_bringup/test/test_pose_follower.py::test_bad_rate_is_rejected PASSED [ 60%]
+src/course_bringup/test/test_pose_follower.py::test_turtle_is_asked_to_go_to_the_published_pose PASSED [ 63%]
+src/course_bringup/test/test_qos.py::test_parse_known_names PASSED       [ 66%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[] PASSED [ 69%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[RELIABLE] PASSED [ 72%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[besteffort] PASSED [ 75%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[None] PASSED [ 78%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[1] PASSED [ 81%]
+src/course_bringup/test/test_qos.py::test_parse_rejects_anything_else[True] PASSED [ 84%]
+src/course_bringup/test/test_qos.py::test_profile_is_keep_last_depth_10 PASSED [ 87%]
+src/course_bringup/test/test_replay_launch_file.py::test_declares_the_replay_arguments PASSED [ 90%]
+src/course_bringup/test/test_replay_launch_file.py::test_starts_turtlesim_and_the_follower_only PASSED [ 93%]
+src/course_bringup/test/test_replay_launch_file.py::test_player_runs_once_or_in_a_loop_depending_on_the_argument PASSED [ 96%]
 src/course_bringup/test/test_xmllint.py::test_xmllint PASSED             [100%]
 
-=================== 20 passed, 1 skipped in 80.06s (0:01:20) ===================
+=================== 32 passed, 1 skipped in 84.94s (0:01:24) ===================
 PYTEST_COURSE_BRINGUP_EXIT=0

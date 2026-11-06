@@ -1,0 +1,29 @@
+# PR05: the turtle follows the replayed sensor_pose
+$ ros2 launch course_bringup replay.launch.py bag:=evidence/pr05/bag
+$ ros2 node list --no-daemon --spin-time 3
+/robot_a/pose_follower
+/rosbag2_player
+/turtlesim
+
+$ ros2 topic echo /turtle1/pose --once   (4 samples, a few seconds apart)
+x: 6.666226863861084 y: 5.982125759124756 theta: 0.7391999959945679 
+x: 5.036447525024414 y: 8.799745559692383 theta: -2.836785316467285 
+x: 5.218505382537842 y: 5.575829029083252 theta: -0.19678530097007751 
+x: 6.448204040527344 y: 8.60887622833252 theta: 2.5632147789001465 
+
+--- launch log (pose_follower / player)
+[INFO] [pose_follower-2]: process started with pid [2112]
+[pose_follower-2] [INFO] [1793945345.657654884] [robot_a.pose_follower]: following /robot_a/sensor_pose with reliability=best_effort at most 20 times per second
+[ros2-3] stdin is not a terminal device. Keyboard handling disabled.[INFO] [1793945346.412939718] [rosbag2_player]: Set rate to 1
+[ros2-3] [INFO] [1793945346.419982426] [rosbag2_player]: Overriding QoS profile for topic /robot_a/sensor_pose
+[ros2-3] [INFO] [1793945346.504403426] [rosbag2_player]: Adding keyboard callbacks.
+[ros2-3] [INFO] [1793945346.505009051] [rosbag2_player]: Press SPACE for Pause/Resume
+[ros2-3] [INFO] [1793945346.505191509] [rosbag2_player]: Press CURSOR_RIGHT for Play Next Message
+[ros2-3] [INFO] [1793945346.505298093] [rosbag2_player]: Press CURSOR_UP for Increase Rate 10%
+<stdin>:10: DeprecationWarning: Use read_next_ext() which returns both send and receive timestamps instead of just receive timestamp.
+
+--- recorded bag evidence/pr05/bag: 2447 poses
+recorded x range [3.874, 7.207], y range [5.544, 8.878]
+turtle samples: 4, all inside the recorded range (+-0.05): True
+distinct turtle positions among samples: 4
+fresh turtle starts at (5.544, 5.544); samples: (6.67, 5.98); (5.04, 8.80); (5.22, 5.58); (6.45, 8.61)

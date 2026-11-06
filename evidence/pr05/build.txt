@@ -1,8 +1,8 @@
 $ colcon build --symlink-install --packages-select patrol course_bringup
 Starting >>> patrol
-Finished <<< patrol [16.4s]
+Finished <<< patrol [14.2s]
 Starting >>> course_bringup
-Finished <<< course_bringup [15.9s]
+Finished <<< course_bringup [14.5s]
 
-Summary: 2 packages finished [33.4s]
+Summary: 2 packages finished [29.7s]
 exit code: 0

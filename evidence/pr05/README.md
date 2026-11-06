@@ -5,7 +5,7 @@
   [../../config/qos-overrides.yaml](../../config/qos-overrides.yaml) — QoS для повтора записи
 - **Отчёт для проверки:** [report.json](report.json)
 - **Декларация ИИ:** [../../AI_USAGE.md](../../AI_USAGE.md) (раздел «ПР05»)
-- **Коммит реализации** (`report.commit`): `fd2e3753a46132f0ce4f6047c41f54b9298ee15a`
+- **Коммит реализации** (`report.commit`): `0c7fdad97104129956891dd57331b97440d308e1`
 
 ## Что устроено
 
@@ -56,8 +56,26 @@ ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-override
 | [qos-after.txt](qos-after.txt) | «после»: `echo` best_effort получает Pose, listener принимает сообщения; повтор записи; `ros2 bag info` (один поток, 2447 сообщений) |
 | [bag-metadata.yaml](bag-metadata.yaml) | копия `bag/metadata.yaml` |
 | [bag/](bag/) | запись MCAP (один топик `/robot_a/sensor_pose`) |
-| [build.txt](build.txt), [tests.txt](tests.txt) | сборка и `pytest` обоих пакетов (44 + 20 passed, по 1 skipped) |
+| [build.txt](build.txt), [tests.txt](tests.txt) | сборка и `pytest` обоих пакетов (44 + 32 passed, по 1 skipped) |
 | [launch-args.txt](launch-args.txt) | `--show-args`: четыре аргумента launch-файла |
+| [replay-animation.txt](replay-animation.txt), [replay-launch-args.txt](replay-launch-args.txt) | повтор записи с движущейся черепахой: замеры позиции и аргументы `replay.launch.py` |
+
+## Повтор записи с движущейся черепахой
+
+Запись для сдачи содержит один поток `sensor_pose`, а черепаху двигают команды, а не позиции.
+Чтобы при повторе черепаха ехала по записанным точкам, добавлены нода `pose_follower` и
+`replay.launch.py`: нода читает `sensor_pose` и ставит черепаху в каждую позу через сервис
+`/turtle1/teleport_absolute`.
+
+```bash
+ros2 launch course_bringup replay.launch.py bag:=evidence/pr05/bag     # из /work; окно с черепахой
+```
+
+Результат ([replay-animation.txt](replay-animation.txt)): запущены `/turtlesim`,
+`/robot_a/pose_follower` и `/rosbag2_player`; четыре замера `/turtle1/pose` дали четыре разные
+точки, все внутри диапазона записи (x 3.874…7.207, y 5.544…8.878). Запись остаётся с одним
+потоком, как требует условие. Нода отправляет не больше 20 запросов в секунду, один запрос за раз,
+делает паузу после появления сервиса и повторяет потерянный запрос.
 
 ## Отличия от примера в методичке
 

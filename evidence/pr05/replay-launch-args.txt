@@ -1,0 +1,27 @@
+$ ros2 launch course_bringup replay.launch.py --show-args
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'bag':
+        Recorded MCAP bag with /<namespace>/sensor_pose
+
+    'namespace':
+        Namespace the pose was recorded in
+        (default: 'robot_a')
+
+    'qos_overrides':
+        QoS profile of the replayed topic (path relative to where you launch)
+        (default: 'config/qos-overrides.yaml')
+
+    'delay':
+        Seconds to wait before playing, so the nodes are ready
+        (default: '8')
+
+    'loop':
+        true: play the recording again and again
+        (default: 'true')
+exit code: 0
+
+$ ros2 pkg executables course_bringup
+course_bringup pose_follower
+course_bringup pose_relay
+course_bringup sensor_listener

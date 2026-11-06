@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "practice_id": "PR05",
-  "commit": "fd2e3753a46132f0ce4f6047c41f54b9298ee15a",
+  "commit": "0c7fdad97104129956891dd57331b97440d308e1",
   "course_kit": {
     "version": "v1-w06",
     "archive_sha256": "6eda53e1c566f7f0a7e09d7afe1e5a6f3b98397175a7e57dede9a84c6d14d0fe"
@@ -20,12 +20,14 @@
     "timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once",
     "ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml --loop",
     "ros2 bag info evidence/pr05/bag",
+    "ros2 launch course_bringup replay.launch.py bag:=evidence/pr05/bag",
+    "ros2 topic echo /turtle1/pose --once",
     "cp evidence/pr05/bag/metadata.yaml evidence/pr05/bag-metadata.yaml",
     "python3 .course-kit/v1/tools/check_practice.py PR05 --submission ."
   ],
   "tests": [
     {"name": "pytest src/patrol/test: 44 passed, 1 skipped (generated copyright test)", "status": "passed"},
-    {"name": "pytest src/course_bringup/test: 20 passed, 1 skipped (generated copyright test)", "status": "passed"},
+    {"name": "pytest src/course_bringup/test: 32 passed, 1 skipped (generated copyright test)", "status": "passed"},
     {"name": "make_qos/parse_reliability: keep_last depth 10, reliable|best_effort only, bad names rejected", "status": "passed"},
     {"name": "launch file declares namespace, record, bag_dir, subscriber_reliability and starts the recorder through IfCondition", "status": "passed"},
     {"name": "in-process: reliable listener gets 0 messages and reports incompatible QoS; best_effort listener receives the relayed pose", "status": "passed"},
@@ -34,7 +36,8 @@
     {"name": "live: reliable echo on /robot_a/sensor_pose times out (exit 124) while the topic is listed and has 1 publisher and 1 subscriber", "status": "passed"},
     {"name": "live: best_effort echo on the same topic receives a pose (exit 0) and the listener logs received messages", "status": "passed"},
     {"name": "replay of the same MCAP with config/qos-overrides.yaml: reliable echo times out, best_effort echo receives a pose", "status": "passed"},
-    {"name": "ros2 bag info: storage mcap, one topic /robot_a/sensor_pose, 2447 messages", "status": "passed"}
+    {"name": "ros2 bag info: storage mcap, one topic /robot_a/sensor_pose, 2447 messages", "status": "passed"},
+    {"name": "replay.launch.py plays the same one-stream bag and pose_follower moves the real turtle: 4 distinct samples, all inside the recorded x/y range", "status": "passed"}
   ],
   "defect": {
     "reproducer": "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false, then `timeout 30s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once`. The topic is in `ros2 topic list`, `ros2 topic info --verbose` shows 1 publisher (pose_relay, BEST_EFFORT) and 1 subscription (sensor_listener, RELIABLE), but no message ever arrives: echo exits 124, the listener received 0 messages (evidence/pr05/qos-before.txt).",
