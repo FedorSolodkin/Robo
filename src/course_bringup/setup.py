@@ -30,6 +30,7 @@ setup(
         'console_scripts': [
             'pose_relay = course_bringup.pose_relay:main',
             'sensor_listener = course_bringup.sensor_listener:main',
+            'pose_follower = course_bringup.pose_follower:main',
         ],
     },
 )

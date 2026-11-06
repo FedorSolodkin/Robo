@@ -33,6 +33,6 @@ jobs:
           printf '%s  %s\n' "$COURSE_KIT_SHA256" course-kit.tar.gz | sha256sum -c -
           mkdir -p .course-kit
           tar -xzf course-kit.tar.gz -C .course-kit
-      - name: Check PR06 evidence
+      - name: Check PR05 evidence
         shell: bash
-        run: python3 .course-kit/v1/tools/check_practice.py PR06 --submission .
+        run: python3 .course-kit/v1/tools/check_practice.py PR05 --submission .
